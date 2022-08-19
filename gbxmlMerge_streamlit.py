@@ -14,6 +14,7 @@ from xgbxml import get_parser
 from copy import copy
 from topologicpy import topologic as tp # from 'foo' import 'bar': this syntax required for topologicpy functionality
 import streamlit as st
+import streamlit.components.v1 as components
 
 
 def uploader_cb():
@@ -173,4 +174,5 @@ st.pyplot()
 # download: the gbXML_C etree to a local file
 st.download_button("Download Merged gbXML", etree.tostring(etree_C, pretty_print=True), file_name = fpo)
 
-
+# embed streamlit docs in a streamlit app
+components.iframe("https://www.ladybug.tools/spider/gbxml-viewer/r14/gv-cor-core/gv-cor.html", width=900, height=600)
