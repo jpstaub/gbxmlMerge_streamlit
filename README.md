@@ -31,5 +31,5 @@ Notes:
 Functional Development & Test:
   Windows 10 /
   Anaconda / Spyder IDE / Python 3.9 /
-  xgbxml 0.0.9
+  xgbxml 0.0.9 /
   topologicpy 0.1.5
