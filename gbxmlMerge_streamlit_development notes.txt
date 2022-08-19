@@ -1,0 +1,37 @@
+22-08-19
+Description: Webapp to merge openings from one gbXML file to another gbXML file without openings.
+
+Environment:
+	Windows: 10
+	Anaconda Navigator: 2.2.0
+	Python: 3.9
+	Pip: 20.1.1
+	streamlit: 1.12.0
+	topologic: 0.1.5	
+	xgbxml: 0.0.9
+
+
+xgbxml (https://github.com/stevenkfirth/xgbxml ; https://pypi.org/project/xgbxml) development
+topologic (https://test.pypi.org/project/topologicpy/)
+
+
+# CADModelAzimuth
+	-Nominal CADModelAzimuth is 0.
+	-In Revit true north was shifted 45 degrees east of project north to generate a change in CADModelAzimuth.
+	-CADModelAzimuth did not change >> CADModelAzimuth is not linked to Revit true north.
+	-In Revit project north was shifted 90 degrees east of true north to generate a change in CADModelAzimuth.
+	-CADModelAzimuth did not change >> CADModelAzimuth is not linked to Revit project north >> CADModelAzimuth is constant 0 >> gbXML coordinates change as required.
+	
+# Revit gbXML >> Surface >> RectangularGeometry >> CartesianPoint
+	-Designates centroid of the surface.
+	
+# Revit gbXML >> Surface >> Opening >> RectangularGeometry >> CartesianPoint
+	-Third coordinate >> zero or missing.
+	-Distance of the bottom-left corner of the opening to the bottom-left corner of the parent surface.
+	
+# Run streamlit app (https://docs.streamlit.io/knowledge-base/using-streamlit/how-do-i-run-my-streamlit-script)
+	1. Enter correct virtual environment
+	2. Open terminal in virtual environment
+	3. Navigate to folder containing your_script.py
+	4. Run: 'streamlit run your_script.py'
+	5. App opens in a new tab on default browser
