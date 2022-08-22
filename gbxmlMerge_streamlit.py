@@ -13,8 +13,8 @@ from lxml import etree
 from xgbxml import get_parser
 from copy import copy
 #from topologicpy import topologic as tp # from 'foo' import 'bar': this syntax required for topologicpy functionality
-#import topologicpy as tp # does not work
-import topologic as tp # does not work
+import topologicpy as tp # does not work
+#import topologic as tp # does not work
 import streamlit as st
 import streamlit.components.v1 as components
 
