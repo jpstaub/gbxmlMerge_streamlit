@@ -12,9 +12,9 @@ This is a temporary script file.
 from lxml import etree
 from xgbxml import get_parser
 from copy import copy
-#from topologicpy import topologic as tp # from 'foo' import 'bar': this syntax required for topologicpy functionality
-import topologicpy as tp # does not work
-#import topologic as tp # does not work
+from topologicpy import topologic as tp # from 'foo' import 'bar': this syntax required for topologicpy functionality
+#import topologicpy as tp # AttributeError: module 'topologicpy' has no attribute 'Vertex'
+#import topologic as tp # ModuleNotFoundError: No module named 'topologic'
 import streamlit as st
 import streamlit.components.v1 as components
 
