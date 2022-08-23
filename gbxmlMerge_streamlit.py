@@ -12,12 +12,12 @@ This is a temporary script file.
 from lxml import etree
 from xgbxml import get_parser
 from copy import copy
-from topologicpy import topologic as tp # from 'foo' import 'bar': this syntax required for topologicpy functionality
-#import topologicpy as tp # AttributeError: module 'topologicpy' has no attribute 'Vertex'
-#import topologic as tp # ModuleNotFoundError: No module named 'topologic'
+#from topologicpy import topologic as tp # from 'foo' import 'bar': this syntax required for topologicpy functionality
+import topologicpy as tp # AttributeError: module 'topologicpy' has no attribute 'Vertex' >> use 'tp.topologic.(function)'
 import streamlit as st
 import streamlit.components.v1 as components
 
+print(dir(tp))
 
 def uploader_cb():
     print("Dummy callback for file uploader")
@@ -76,7 +76,7 @@ def faceByVertices(vertices):
         v1 = vertices[i]
         v2 = vertices[i+1]
         try:
-            e = tp.Edge.ByStartVertexEndVertex(v1, v2)
+            e = tp.topologic.Edge.ByStartVertexEndVertex(v1, v2)
             if e:
                 edges.append(e)
         except:
@@ -87,7 +87,7 @@ def faceByVertices(vertices):
     # print("V1:", v1.X(), v1.Y(), v1.Z())
     # print("V2:", v2.X(), v2.Y(), v2.Z())
     try:
-        e = tp.Edge.ByStartVertexEndVertex(v1, v2)
+        e = tp.topologic.Edge.ByStartVertexEndVertex(v1, v2)
         if e:
             edges.append(e)
     except:
@@ -95,10 +95,10 @@ def faceByVertices(vertices):
         pass
     # print("I managed to create",len(edges),"edges")
     if len(edges) >= 3:
-        c = tp.Cluster.ByTopologies(edges, False)
+        c = tp.topologic.Cluster.ByTopologies(edges, False)
         w = c.SelfMerge()
-        if w.Type() == tp.Wire.Type() and w.IsClosed():
-            f = tp.Face.ByExternalBoundary(w)
+        if w.Type() == tp.topologic.Wire.Type() and w.IsClosed():
+            f = tp.topologic.Face.ByExternalBoundary(w)
         else:
             raise Exception("Error: Could not get a valid wire")
     else:
@@ -113,8 +113,8 @@ for op in gbxml_B.Campus.Surfaces.Openings:
     ops.append(op)
     o = []
     for c in op.PlanarGeometry.get_coordinates():
-        o.append(tp.Vertex.ByCoordinates(c[0],c[1],c[2]))
-    ocs.append(tp.Topology.Centroid(faceByVertices(o)))
+        o.append(tp.topologic.Vertex.ByCoordinates(c[0],c[1],c[2]))
+    ocs.append(tp.topologic.Topology.Centroid(faceByVertices(o)))
 
 
 # get: gbxml_C exterior surfaces (exsu)
@@ -126,7 +126,7 @@ for su in gbxml_C.Campus.Surfaces:
         exsu.append(su)
         s = []
         for c in su.PlanarGeometry.get_coordinates():
-            s.append(tp.Vertex.ByCoordinates(c[0],c[1],c[2]))
+            s.append(tp.topologic.Vertex.ByCoordinates(c[0],c[1],c[2]))
         sfs.append(faceByVertices(s))
 
 
@@ -135,7 +135,7 @@ vin = []
 for oc in ocs:
     r = []
     for sf in sfs:
-        r.append(tp.FaceUtility.IsInside(sf,oc,0.01))
+        r.append(tp.topologic.FaceUtility.IsInside(sf,oc,0.01))
     vin.append(r)
     
    
