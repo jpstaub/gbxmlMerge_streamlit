@@ -54,7 +54,8 @@ fpo = 'merged.xml'
 # set: distance tolerance of opening from surface in gbXML length units (typically the thickness of the roof or wall)
 # dist = 1.1
 dist = st.sidebar.number_input("tolerance of opening from surface in gbXML length units", min_value=0.01, max_value=2.0, value=1.1, help="typically greater than the thickness of the roof")
-
+if dist == 1.1:
+    st.stop()
 
 # use: xgbxml to generate a lxml parser / read: gbXML version from input file
 tree_parser=etree.parse(fpa)
@@ -200,7 +201,7 @@ st.pyplot()
 
 
 # download: the gbXML_C etree to a local file
-st.download_button("Download Merged gbXML", etree.tostring(etree_C, pretty_print=True), file_name = fpo)
+st.sibebar.download_button("Download Merged gbXML", etree.tostring(etree_C, pretty_print=True), file_name = fpo)
 
 # embed streamlit docs in a streamlit app
 components.iframe("https://www.ladybug.tools/spider/gbxml-viewer/r14/gv-cor-core/gv-cor.html", width=900, height=600)
