@@ -13,7 +13,7 @@ Inputs:
 Outputs:
 1. Composite gbXML made up of Geometry from gbXML based on Mass families and Openings from gbXML based on Spaces.
 
-### [Run streamlit app](https://docs.streamlit.io/knowledge-base/using-streamlit/how-do-i-run-my-streamlit-script)
+### [Run streamlit app](https://jpstaub-gbxmlmerge-streamlit-gbxmlmerge-streamlit-h1erbp.streamlitapp.com/)
 	1. Enter correct virtual environment
 	2. Open terminal in virtual environment
 	3. Navigate to folder containing your_script.py
