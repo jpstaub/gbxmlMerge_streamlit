@@ -35,3 +35,14 @@ topologic (https://test.pypi.org/project/topologicpy/)
 	3. Navigate to folder containing your_script.py
 	4. Run: 'streamlit run your_script.py'
 	5. App opens in a new tab on default browser
+	
+# Streamlit dependencies
+	https://docs.streamlit.io/streamlit-cloud/get-started/deploy-an-app/app-dependencies#add-python-dependencies
+
+# Python list dependencies
+	https://stackoverflow.com/questions/42237072/list-dependencies-in-python
+	
+# pip install documentation
+	https://pip.pypa.io/en/stable/cli/pip_install/#install-extra-index-url
+	https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/?highlight=extras
+	

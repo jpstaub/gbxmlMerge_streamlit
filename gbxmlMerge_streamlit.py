@@ -39,18 +39,28 @@ def uploader_cb():
     print("Dummy callback for file uploader")
 
 # define: file variables with streamlit
-fpa = st.file_uploader("gbxml without openings", type = 'xml', on_change = uploader_cb())
+# fpa = st.file_uploader("gbxml without openings", type = 'xml', on_change = uploader_cb())
+fpa = st.sidebar.file_uploader("gbxml without openings", type = 'xml', on_change = uploader_cb())
 if fpa is None:
     st.stop()
     
-fpb = st.file_uploader("gbxml with openings", type = 'xml', on_change = uploader_cb())
+# fpb = st.file_uploader("gbxml with openings", type = 'xml', on_change = uploader_cb())
+fpb = st.sidebar.file_uploader("gbxml with openings", type = 'xml', on_change = uploader_cb())
 if fpb is None:
     st.stop()
     
 fpo = 'merged.xml'
 
-# use: xgbxml to generate a lxml parser / read: gxXML version 0.37
-parser=get_parser(version='0.37')
+# set: distance tolerance of opening from surface in gbXML length units (typically the thickness of the roof or wall)
+# dist = 1.1
+dist = st.sidebar.number_input("tolerance of opening from surface in gbXML length units", min_value=0.01, max_value=2.0, value=1.1, help="typically greater than the thickness of the roof")
+
+
+# use: xgbxml to generate a lxml parser / read: gbXML version from input file
+tree_parser=etree.parse(fpa)
+gbxml=tree_parser.getroot()
+parser=get_parser(version=gbxml.attrib['version'])
+# parser=get_parser(version='0.37')
 
 # # render: the gbXML etree
 # ax = gbxml_A.Campus.render()
@@ -151,7 +161,7 @@ vin = []
 for oc in ocs:
     r = []
     for sf in sfs:
-        r.append(topologic.FaceUtility.IsInside(sf,oc,0.01))
+        r.append(topologic.FaceUtility.IsInside(sf,oc,dist))
     vin.append(r)
     
    
@@ -170,13 +180,13 @@ for v in vin:
         sfoc.append(False)
         
     
-# insert: gbxml_B opening into gbxml_C surface object
+# insert: gbxml_B opening into gbxml_C surface object if opening within variable 'dist' parameter
 i = 0
 for sf in sfoc:
     if sf==False:
         i+=1
     else:    
-        exsu[sf].insert(3, ops[i])
+        exsu[sf].insert(3, exsu[sf].copy_opening(ops[i],tolerance=dist)) # copy_opening is xgbxml method
         i+=1
       
 
