@@ -1,4 +1,4 @@
-### [gbxmlMerge_streamlit](https://jpstaub-gbxmlmerge-streamlit-gbxmlmerge-streamlit-h1erbp.streamlitapp.com/)
+### [gbxmlMerge_streamlit online](https://jpstaub-gbxmlmerge-streamlit-gbxmlmerge-streamlit-h1erbp.streamlitapp.com/)
 Merge 'Geometry' in gbXML File A with 'Openings' in gbXML File B to 'Geometry with Openings' in gbXML File C.
 
 Purpose: This python script is meant to process full Revit gbXML input files in XML format:
@@ -7,7 +7,6 @@ Purpose: This python script is meant to process full Revit gbXML input files in 
 
 Inputs:
 1. Revit gbXML files in XML format. File locations are chosen via a typical directory GUI.
-2. Output file name and destination location via a typical directory GUI.
 
 
 Outputs:
