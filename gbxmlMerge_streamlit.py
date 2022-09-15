@@ -2,10 +2,11 @@
 """
 Spyder Editor
 
-This is a temporary script file.
+Merges two gbXML files exported from Revit. First gbXML based on Revit masses does not include openings.
+Second gbXML based on Revit spaces includes openings. Openings within variable 'dist' parameter are
+take from gbXML based on Revit spaces and merged with gbXML based on Revit masses.
 """
 
-# Todo: implement Topologic (https://topologic.app/user_doc :: Topologic:Utilities:FaceUtility:IsInside) to detect containment of opening vertex in surface faces.
 # Topologic on PyPi: https://test.pypi.org/project/topologicpy/
 
 
