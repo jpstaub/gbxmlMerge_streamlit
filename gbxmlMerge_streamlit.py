@@ -53,8 +53,9 @@ fpo = 'merged.xml'
 
 # set: distance tolerance of opening from surface in gbXML length units (typically the thickness of the roof or wall)
 # dist = 1.1
-dist = st.sidebar.number_input("tolerance of opening from surface in gbXML length units", min_value=0.01, max_value=2.0, value=1.1, help="typically greater than the thickness of the roof")
-if dist is not None:
+dist = st.sidebar.number_input("tolerance of opening from surface in gbXML length units", min_value=0.0, max_value=2.0, value=0.0, help="typically greater than the thickness of the roof")
+if dist==0:
+    st.warning("Please input a value greater than 0.")
     st.stop()
 
 # use: xgbxml to generate a lxml parser / read: gbXML version from input file
