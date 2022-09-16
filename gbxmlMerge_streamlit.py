@@ -37,11 +37,11 @@ import topologic
 #print(dir(topologic)) # troubleshooting of topologic module path(s)
 
 # front matter
-title_text = 'gbxmlMerge'
-sub_text = 'by Ripcord Engineering'
+title_body = 'gbxmlMerge'
+sub_body = '<a href="https://www.ripcordengineering.com">by Ripcord Engineering</a>'
 
-st.title(title_text)
-st.subheader(sub_text)
+st.title(title_body)
+st.subheader(sub_body)
 
 
 def uploader_cb():
