@@ -81,7 +81,6 @@ parser=get_parser(version=gbxml.attrib['version'])
 # parser=get_parser(version='0.37')
 
 
-
 # open: the file using the lxml parser
 tree_A = etree.parse(fpa,parser)
 gbxml_A = tree_A.getroot()
@@ -90,9 +89,6 @@ gbxml_A = tree_A.getroot()
 # open: the file using the lxml parser
 tree_B = etree.parse(fpb,parser)
 gbxml_B = tree_B.getroot()
-
-
-
 
 
 # make: a copy of gbxml_A which is named gbxml_C
@@ -136,6 +132,7 @@ def faceByVertices(vertices):
     else:
         raise Exception("Error: could not get a valid number of edges")
     return f
+
 
 # get: gbxml_B openings (ops)    
 # make: gbxml_B opening centroids (ocs)
@@ -195,11 +192,11 @@ for sf in sfoc:
         exsu[sf].insert(3, exsu[sf].copy_opening(ops[i],tolerance=dist)) # copy_opening is xgbxml method
         i+=1
 
+
 # render: the gbXML etree
 render_body = 'Please select the gbXML to view.'
 render_options = ('gbXML without openings', 'gbXML with openings', 'merged gbXML')       
-render = st.radio(render_body, render_options)
-
+render = st.radio(render_body, render_options, index=2)
 
 if render == 'gbXML without openings':
     ax = gbxml_A.Campus.render()
@@ -212,7 +209,7 @@ elif render == 'gbXML with openings':
 else:
     ax = gbxml_C.Campus.render()
     ax.figure.set_size_inches(8, 8)
-    ax.set_title('Merged gbXML')
+    ax.set_title('merged gbXML')
 st.set_option('deprecation.showPyplotGlobalUse', False) #hides deprecation warning on webpage
 st.pyplot()
 
@@ -222,6 +219,7 @@ with st.sidebar:
     download_label = 'Download Merged gbXML'
     st.download_button(download_label, etree.tostring(etree_C, pretty_print=True), file_name = fpo)
 
-# embed streamlit docs in a streamlit app
+
+# embed: ladybug tools gbxml viewer
 iframe_address = 'https://www.ladybug.tools/spider/gbxml-viewer/r14/gv-cor-core/gv-cor.html'
 components.iframe(iframe_address, width=900, height=600)
