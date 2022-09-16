@@ -37,7 +37,7 @@ import topologic
 #print(dir(topologic)) # troubleshooting of topologic module path(s)
 
 # front matter
-title_body = 'gbxmlMerge'
+title_body = '[gbxmlMerge](https://github.com/jpstaub/Revit-Dynamo-MEP/blob/master/AutomatedBuildingEnergyModel/Ripcord_Revit-gbXML_Workflow_22-09-15.pdf)'
 sub_body = 'by [Ripcord Engineering](https://www.ripcordengineering.com)'
 
 st.title(title_body)
