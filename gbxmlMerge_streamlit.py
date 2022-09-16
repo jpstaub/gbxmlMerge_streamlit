@@ -38,7 +38,7 @@ import topologic
 
 # front matter
 title_body = 'gbxmlMerge'
-sub_body = 'Ripcord Engineering [link](https://www.ripcordengineering.com)'
+sub_body = 'by [Ripcord Engineering](https://www.ripcordengineering.com)'
 
 st.title(title_body)
 st.subheader(sub_body)
