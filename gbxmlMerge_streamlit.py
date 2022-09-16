@@ -36,17 +36,28 @@ import topologic
 
 #print(dir(topologic)) # troubleshooting of topologic module path(s)
 
+# front matter
+title_text = 'gbxmlMerge'
+sub_text = 'by Ripcord Engineering'
+
+st.title(title_text)
+st.subheader(sub_text)
+
+
 def uploader_cb():
     print("Dummy callback for file uploader")
+    
 
 # define: file variables with streamlit
 # fpa = st.file_uploader("gbxml without openings", type = 'xml', on_change = uploader_cb())
-fpa = st.sidebar.file_uploader("gbxml without openings", type = 'xml', on_change = uploader_cb())
+fpa_label = 'gbxml without openings'
+fpa = st.sidebar.file_uploader(fpa_label, type = 'xml', on_change = uploader_cb())
 if fpa is None:
     st.stop()
     
 # fpb = st.file_uploader("gbxml with openings", type = 'xml', on_change = uploader_cb())
-fpb = st.sidebar.file_uploader("gbxml with openings", type = 'xml', on_change = uploader_cb())
+fpb_label = 'gbxml with openings'
+fpb = st.sidebar.file_uploader(fpb_label, type = 'xml', on_change = uploader_cb())
 if fpb is None:
     st.stop()
     
@@ -54,9 +65,12 @@ fpo = 'merged.xml'
 
 # set: distance tolerance of opening from surface in gbXML length units (typically the thickness of the roof or wall)
 # dist = 1.1
-dist = st.sidebar.number_input("tolerance of opening from surface in gbXML length units", min_value=0.0, max_value=2.0, value=0.0, help="typically greater than the thickness of the roof")
+dist_statement = 'tolerance of opening from surface in gbXML length units'
+dist_help = 'typically greater than the thickness of the roof'
+dist_warning = 'Please input an opening tolerance value greater than 0.'
+dist = st.sidebar.number_input(dist_statement, min_value=0.0, max_value=2.0, value=0.0, help=dist_help)
 if dist==0:
-    st.warning("Please input an opening tolerance value greater than 0.")
+    st.warning(dist_warning)
     st.stop()
 
 # use: xgbxml to generate a lxml parser / read: gbXML version from input file
@@ -204,7 +218,9 @@ st.pyplot()
 
 # download: the gbXML_C etree to a local file
 with st.sidebar:
-    st.download_button("Download Merged gbXML", etree.tostring(etree_C, pretty_print=True), file_name = fpo)
+    download_label = 'Download Merged gbXML'
+    st.download_button(download_label, etree.tostring(etree_C, pretty_print=True), file_name = fpo)
 
 # embed streamlit docs in a streamlit app
-components.iframe("https://www.ladybug.tools/spider/gbxml-viewer/r14/gv-cor-core/gv-cor.html", width=900, height=600)
+iframe_address = 'https://www.ladybug.tools/spider/gbxml-viewer/r14/gv-cor-core/gv-cor.html'
+components.iframe(iframe_address, width=900, height=600)
