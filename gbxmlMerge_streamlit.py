@@ -72,6 +72,7 @@ dist = st.sidebar.number_input(dist_statement, min_value=0.0, max_value=2.0, val
 if dist==0:
     st.warning(dist_warning)
     st.stop()
+    
 
 # use: xgbxml to generate a lxml parser / read: gbXML version from input file
 tree_parser=etree.parse(fpa)
@@ -79,13 +80,7 @@ gbxml=tree_parser.getroot()
 parser=get_parser(version=gbxml.attrib['version'])
 # parser=get_parser(version='0.37')
 
-# # render: the gbXML etree
-# ax = gbxml_A.Campus.render()
-# ax.figure.set_size_inches(8, 8)
-# ax.set_title('gbXML A_Geometry.xml')
-# st.set_option('deprecation.showPyplotGlobalUse', False) #hides deprecation warning on webpage
 
-# st.pyplot()
 
 # open: the file using the lxml parser
 tree_A = etree.parse(fpa,parser)
@@ -97,13 +92,7 @@ tree_B = etree.parse(fpb,parser)
 gbxml_B = tree_B.getroot()
 
 
-# # render: the gbXML etree
-# ax = gbxml_B.Campus.render()
-# ax.figure.set_size_inches(8, 8)
-# ax.set_title('gbXML B_Openings.xml')
-# st.set_option('deprecation.showPyplotGlobalUse', False) #hides deprecation warning on webpage
 
-# st.pyplot()
 
 
 # make: a copy of gbxml_A which is named gbxml_C
@@ -205,14 +194,26 @@ for sf in sfoc:
     else:    
         exsu[sf].insert(3, exsu[sf].copy_opening(ops[i],tolerance=dist)) # copy_opening is xgbxml method
         i+=1
-      
 
 # render: the gbXML etree
-ax = gbxml_C.Campus.render()
-ax.figure.set_size_inches(8, 8)
-ax.set_title('Merged gbXML')
-st.set_option('deprecation.showPyplotGlobalUse', False) #hides deprecation warning on webpage
+render_body = 'Please select the gbXML to view.'
+render_options = ('gbXML without openings', 'gbXML with openings', 'merged gbXML')       
+render = st.radio(render_body, render_options)
 
+
+if render == 'gbXML without openings':
+    ax = gbxml_A.Campus.render()
+    ax.figure.set_size_inches(8, 8)
+    ax.set_title('gbXML without openings')
+elif render == 'gbXML with openings':
+    ax = gbxml_B.Campus.render()
+    ax.figure.set_size_inches(8, 8)
+    ax.set_title('gbXML with openings')
+else:
+    ax = gbxml_C.Campus.render()
+    ax.figure.set_size_inches(8, 8)
+    ax.set_title('Merged gbXML')
+st.set_option('deprecation.showPyplotGlobalUse', False) #hides deprecation warning on webpage
 st.pyplot()
 
 
