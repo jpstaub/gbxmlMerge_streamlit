@@ -44,20 +44,23 @@ st.title(title_body)
 st.subheader(sub_body)
 
 
-def uploader_cb():
-    print("Dummy callback for file uploader")
+def uploader_fpa():
+    print("Uploaded gbxml without openings.")
+    
+def uploader_fpb():
+    print("Uploaded gbxml with openings.")
     
 
 # define: file variables with streamlit
 # fpa = st.file_uploader("gbxml without openings", type = 'xml', on_change = uploader_cb())
 fpa_label = 'gbxml without openings'
-fpa = st.sidebar.file_uploader(fpa_label, type = 'xml', on_change = uploader_cb())
+fpa = st.sidebar.file_uploader(fpa_label, type = 'xml', on_change = uploader_fpa())
 if fpa is None:
     st.stop()
     
 # fpb = st.file_uploader("gbxml with openings", type = 'xml', on_change = uploader_cb())
 fpb_label = 'gbxml with openings'
-fpb = st.sidebar.file_uploader(fpb_label, type = 'xml', on_change = uploader_cb())
+fpb = st.sidebar.file_uploader(fpb_label, type = 'xml', on_change = uploader_fpb())
 if fpb is None:
     st.stop()
     
