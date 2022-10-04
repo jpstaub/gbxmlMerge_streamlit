@@ -2,10 +2,11 @@
 """
 Spyder Editor
 
-This is a temporary script file.
+Merges two gbXML files exported from Revit. First gbXML based on Revit masses does not include openings.
+Second gbXML based on Revit spaces includes openings. Openings within variable 'dist' parameter are
+take from gbXML based on Revit spaces and merged with gbXML based on Revit masses.
 """
 
-# Todo: implement Topologic (https://topologic.app/user_doc :: Topologic:Utilities:FaceUtility:IsInside) to detect containment of opening vertex in surface faces.
 # Topologic on PyPi: https://test.pypi.org/project/topologicpy/
 
 
@@ -35,30 +36,53 @@ import topologic
 
 #print(dir(topologic)) # troubleshooting of topologic module path(s)
 
-def uploader_cb():
-    print("Dummy callback for file uploader")
+# front matter
+title_body = '[gbxmlMerge](https://github.com/jpstaub/Revit-Dynamo-MEP/blob/master/AutomatedBuildingEnergyModel/Ripcord_Revit-gbXML_Workflow_22-09-15.pdf)'
+sub_body = 'by [Ripcord Engineering](https://www.ripcordengineering.com)'
+
+st.title(title_body)
+st.subheader(sub_body)
+
+
+def uploader_fpa():
+    print("Uploaded gbxml without openings.")
+    
+def uploader_fpb():
+    print("Uploaded gbxml with openings.")
+    
 
 # define: file variables with streamlit
-fpa = st.file_uploader("gbxml without openings", type = 'xml', on_change = uploader_cb())
+# fpa = st.file_uploader("gbxml without openings", type = 'xml', on_change = uploader_cb())
+fpa_label = 'gbxml without openings'
+fpa = st.sidebar.file_uploader(fpa_label, type = 'xml', on_change = uploader_fpa())
 if fpa is None:
     st.stop()
     
-fpb = st.file_uploader("gbxml with openings", type = 'xml', on_change = uploader_cb())
+# fpb = st.file_uploader("gbxml with openings", type = 'xml', on_change = uploader_cb())
+fpb_label = 'gbxml with openings'
+fpb = st.sidebar.file_uploader(fpb_label, type = 'xml', on_change = uploader_fpb())
 if fpb is None:
     st.stop()
     
 fpo = 'merged.xml'
 
-# use: xgbxml to generate a lxml parser / read: gxXML version 0.37
-parser=get_parser(version='0.37')
+# set: distance tolerance of opening from surface in gbXML length units (typically the thickness of the roof or wall)
+# dist = 1.1
+dist_statement = 'tolerance of opening from surface in gbXML length units'
+dist_help = 'typically greater than the thickness of the roof'
+dist_warning = 'Please input an opening tolerance value greater than 0.'
+dist = st.sidebar.number_input(dist_statement, min_value=0.0, max_value=2.0, value=0.0, help=dist_help)
+if dist==0:
+    st.warning(dist_warning)
+    st.stop()
+    
 
-# # render: the gbXML etree
-# ax = gbxml_A.Campus.render()
-# ax.figure.set_size_inches(8, 8)
-# ax.set_title('gbXML A_Geometry.xml')
-# st.set_option('deprecation.showPyplotGlobalUse', False) #hides deprecation warning on webpage
+# use: xgbxml to generate a lxml parser / read: gbXML version from input file
+tree_parser=etree.parse(fpa)
+gbxml=tree_parser.getroot()
+parser=get_parser(version=gbxml.attrib['version'])
+# parser=get_parser(version='0.37')
 
-# st.pyplot()
 
 # open: the file using the lxml parser
 tree_A = etree.parse(fpa,parser)
@@ -68,15 +92,6 @@ gbxml_A = tree_A.getroot()
 # open: the file using the lxml parser
 tree_B = etree.parse(fpb,parser)
 gbxml_B = tree_B.getroot()
-
-
-# # render: the gbXML etree
-# ax = gbxml_B.Campus.render()
-# ax.figure.set_size_inches(8, 8)
-# ax.set_title('gbXML B_Openings.xml')
-# st.set_option('deprecation.showPyplotGlobalUse', False) #hides deprecation warning on webpage
-
-# st.pyplot()
 
 
 # make: a copy of gbxml_A which is named gbxml_C
@@ -121,6 +136,7 @@ def faceByVertices(vertices):
         raise Exception("Error: could not get a valid number of edges")
     return f
 
+
 # get: gbxml_B openings (ops)    
 # make: gbxml_B opening centroids (ocs)
 ops = []
@@ -151,7 +167,7 @@ vin = []
 for oc in ocs:
     r = []
     for sf in sfs:
-        r.append(topologic.FaceUtility.IsInside(sf,oc,0.01))
+        r.append(topologic.FaceUtility.IsInside(sf,oc,dist))
     vin.append(r)
     
    
@@ -170,27 +186,43 @@ for v in vin:
         sfoc.append(False)
         
     
-# insert: gbxml_B opening into gbxml_C surface object
+# insert: gbxml_B opening into gbxml_C surface object if opening within variable 'dist' parameter
 i = 0
 for sf in sfoc:
     if sf==False:
         i+=1
     else:    
-        exsu[sf].insert(3, ops[i])
+        exsu[sf].insert(3, exsu[sf].copy_opening(ops[i],tolerance=dist)) # copy_opening is xgbxml method
         i+=1
-      
+
 
 # render: the gbXML etree
-ax = gbxml_C.Campus.render()
-ax.figure.set_size_inches(8, 8)
-ax.set_title('Merged gbXML')
-st.set_option('deprecation.showPyplotGlobalUse', False) #hides deprecation warning on webpage
+render_body = 'Please select the gbXML to view.'
+render_options = ('gbXML without openings', 'gbXML with openings', 'merged gbXML')       
+render = st.radio(render_body, render_options, index=2)
 
+if render == 'gbXML without openings':
+    ax = gbxml_A.Campus.render()
+    ax.figure.set_size_inches(8, 8)
+    ax.set_title('gbXML without openings')
+elif render == 'gbXML with openings':
+    ax = gbxml_B.Campus.render()
+    ax.figure.set_size_inches(8, 8)
+    ax.set_title('gbXML with openings')
+else:
+    ax = gbxml_C.Campus.render()
+    ax.figure.set_size_inches(8, 8)
+    ax.set_title('merged gbXML')
+st.set_option('deprecation.showPyplotGlobalUse', False) #hides deprecation warning on webpage
 st.pyplot()
 
 
 # download: the gbXML_C etree to a local file
-st.download_button("Download Merged gbXML", etree.tostring(etree_C, pretty_print=True), file_name = fpo)
+with st.sidebar:
+    download_label = 'Download Merged gbXML'
+    st.download_button(download_label, etree.tostring(etree_C, pretty_print=True), file_name = fpo)
 
-# embed streamlit docs in a streamlit app
-components.iframe("https://www.ladybug.tools/spider/gbxml-viewer/r14/gv-cor-core/gv-cor.html", width=900, height=600)
+
+# embed: ladybug tools gbxml viewer
+iframe_address = 'https://www.ladybug.tools/spider/gbxml-viewer/r14/gv-cor-core/gv-cor.html'
+components.iframe(iframe_address, width=900, height=600)
