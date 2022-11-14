@@ -166,17 +166,21 @@ for v in vin:
     if True in v:
         sfoc.append(v.index(True))
     else:
-        sfoc.append(False)
-        
-    
+        sfoc.append(False)       
+           
+
 # insert: gbxml_B opening into gbxml_C surface object if opening within variable 'dist' parameter
 i = 0
 for sf in sfoc:
     if sf==False:
         i+=1
-    else:    
-        exsu[sf].insert(3, exsu[sf].copy_opening(ops[i],tolerance=dist)) # copy_opening is xgbxml method
-        i+=1
+    else:
+        try:
+            exsu[sf].insert(3, exsu[sf].copy_opening(ops[i],tolerance=dist)) # copy_opening is xgbxml method
+            i+=1
+        except ValueError as e:
+            print(str(e) + '. Check opening: ' + ops[i].Name.text + '.')            
+            i+=1
 
 
 # render: the gbXML etree
