@@ -169,7 +169,9 @@ for v in vin:
 
 # insert: gbxml_B opening into gbxml_C surface object if opening within variable 'dist' parameter
 i = 0
+errors = []
 for sf in sfoc:
+
     if sf==False:
         i+=1
     else:
@@ -189,13 +191,17 @@ for sf in sfoc:
             
         except ValueError:
             opening_error = ('Caught ValueError. Check opening: ' + ops[i].Name.text + '.')
-            st.error(opening_error)
+            # st.error(opening_error)
+            errors.append(opening_error)
             i+=1
         except Exception:
             opening_error = ('Caught Exception. Check opening: ' + ops[i].Name.text + '.')
-            st.error(opening_error)
+            # st.error(opening_error)
+            errors.append(opening_error)            
             i+=1
-
+with st.sidebar:
+    with st.expander("Exceptions"):
+        st.error(errors)
 
 # render: the gbXML etree
 render_body = 'Please select the gbXML to view.'
