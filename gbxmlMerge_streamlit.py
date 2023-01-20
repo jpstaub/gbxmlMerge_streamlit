@@ -178,13 +178,13 @@ for sf in sfoc:
             i+=1
         except ValueError:
             opening_error = ('Caught ValueError. Check opening: ' + ops[i].Name.text + '.')
-            with st.sidebar.expander:
-                st.error(opening_error)
+            with st.sidebar:
+                st.expander.error(opening_error)
             i+=1
         except Exception:
             opening_error = ('Caught Exception. Check opening: ' + ops[i].Name.text + '.')
-            with st.sidebar.expander:
-                st.error(opening_error)
+            with st.sidebar:
+                st.expander.error(opening_error)
             i+=1
 
 
