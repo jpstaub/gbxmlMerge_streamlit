@@ -199,9 +199,10 @@ for sf in sfoc:
             # st.error(opening_error)
             errors.append(opening_error)            
             i+=1
-with st.sidebar:
-    with st.expander("Exceptions"):
-        st.error(errors)
+
+with st.expander("Exceptions"):
+    for e in errors:
+        st.error(e)
 
 # render: the gbXML etree
 render_body = 'Please select the gbXML to view.'
