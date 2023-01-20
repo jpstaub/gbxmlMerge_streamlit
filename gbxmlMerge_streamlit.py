@@ -19,12 +19,10 @@ from topologicpy import topologic
 
 #print(dir(topologic)) # troubleshooting of topologic module path(s)
 
-# front matter
+
+# tab1 front matter
 title_body = '[gbxmlMerge](https://github.com/jpstaub/Revit-Dynamo-MEP/blob/master/AutomatedBuildingEnergyModel/Ripcord_Revit-gbXML_Workflow_22-09-15.pdf)'
 sub_body = 'by [Ripcord Engineering](https://www.ripcordengineering.com)'
-
-st.title(title_body)
-st.subheader(sub_body)
 
 
 def uploader_fpa():
@@ -180,12 +178,12 @@ for sf in sfoc:
             i+=1
         except ValueError:
             opening_error = ('Caught ValueError. Check opening: ' + ops[i].Name.text + '.')
-            with st.sidebar:
+            with st.sidebar.expander:
                 st.error(opening_error)
             i+=1
         except Exception:
             opening_error = ('Caught Exception. Check opening: ' + ops[i].Name.text + '.')
-            with st.sidebar:
+            with st.sidebar.expander:
                 st.error(opening_error)
             i+=1
 
