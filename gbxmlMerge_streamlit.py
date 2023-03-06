@@ -118,6 +118,22 @@ def faceByVertices(vertices):
     return f
 
 
+# format: Space Name
+for space in gbxml_C.Campus.Building.Spaces:
+    try:
+        name = space.Name.text.replace('-', ':')
+        number = name.split(':')[1].strip()
+        new_name = 'Space ' + number
+        space.Name.text = new_name
+    except:
+        pass
+
+
+# insert: gbxml_B WindowTypes into gbxml_C
+for window_type in gbxml_B.WindowTypes:
+    gbxml_C.insert(1, window_type)
+
+
 # get: gbxml_B openings (ops)    
 # make: gbxml_B opening centroids (ocs)
 ops = []

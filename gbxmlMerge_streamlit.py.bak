@@ -19,12 +19,10 @@ from topologicpy import topologic
 
 #print(dir(topologic)) # troubleshooting of topologic module path(s)
 
-# front matter
+
+# tab1 front matter
 title_body = '[gbxmlMerge](https://github.com/jpstaub/Revit-Dynamo-MEP/blob/master/AutomatedBuildingEnergyModel/Ripcord_Revit-gbXML_Workflow_22-09-15.pdf)'
 sub_body = 'by [Ripcord Engineering](https://www.ripcordengineering.com)'
-
-st.title(title_body)
-st.subheader(sub_body)
 
 
 def uploader_fpa():
@@ -171,24 +169,30 @@ for v in vin:
 
 # insert: gbxml_B opening into gbxml_C surface object if opening within variable 'dist' parameter
 i = 0
+errors = []
 for sf in sfoc:
+
     if sf==False:
         i+=1
     else:
         try:
             exsu[sf].insert(3, exsu[sf].copy_opening(ops[i],tolerance=dist)) # copy_opening is xgbxml method
-            i+=1
+            i+=1            
         except ValueError:
             opening_error = ('Caught ValueError. Check opening: ' + ops[i].Name.text + '.')
-            with st.sidebar:
-                st.error(opening_error)
+            # st.error(opening_error)
+            errors.append(opening_error)
             i+=1
         except Exception:
             opening_error = ('Caught Exception. Check opening: ' + ops[i].Name.text + '.')
-            with st.sidebar:
-                st.error(opening_error)
+            # st.error(opening_error)
+            errors.append(opening_error)            
             i+=1
 
+# write errors to an expander container
+with st.expander("Exceptions"):
+    for e in errors:
+        st.error(e)
 
 # render: the gbXML etree
 render_body = 'Please select the gbXML to view.'

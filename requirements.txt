@@ -7,4 +7,4 @@ numpy==1.23.1
 pandas==1.4.3
 streamlit==1.12.0
 streamlit-ws-localstorage==1.0.0
-topologicpy==0.0.15
+topologicpy==0.0.25
