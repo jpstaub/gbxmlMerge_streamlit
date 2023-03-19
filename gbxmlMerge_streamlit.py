@@ -123,7 +123,7 @@ for space in gbxml_C.Campus.Building.Spaces:
     try:
         name = space.Name.text.replace('-', ':')
         number = name.split(':')[1].strip()
-        new_name = 'Space ' + number
+        new_name = number + ' Space'
         space.Name.text = new_name
     except:
         pass
@@ -180,15 +180,19 @@ for v in vin:
     if True in v:
         sfoc.append(v.index(True))
     else:
-        sfoc.append(False)       
+        sfoc.append('False')       
            
 
 # insert: gbxml_B opening into gbxml_C surface object if opening within variable 'dist' parameter
 i = 0
+j = 0
+status = []
 errors = []
 for sf in sfoc:
-
-    if sf==False:
+    if sf=='False':
+        match_error = ('Opening without matching surface: ' + ops[i].Name.text + '.')
+        status.append(match_error)
+        j+=1
         i+=1
     else:
         try:
@@ -207,6 +211,9 @@ for sf in sfoc:
 
 # write errors to an expander container
 with st.expander("Exceptions"):
+    st.error('Copied ' + str(i-j) + ' of ' + str(len(ops)) + ' openings.')
+    for s in status:
+        st.error(s)
     for e in errors:
         st.error(e)
 
