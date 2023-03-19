@@ -180,7 +180,8 @@ for v in vin:
     if True in v:
         sfoc.append(v.index(True))
     else:
-        sfoc.append('False')       
+        sfoc.append(False)        
+        # sfoc.append('False')       
            
 
 # insert: gbxml_B opening into gbxml_C surface object if opening within variable 'dist' parameter
@@ -189,7 +190,8 @@ j = 0
 infos = []
 errors = []
 for sf in sfoc:
-    if sf=='False':
+    if sf==False:    
+    # if sf=='False':
         infos.append('Opening without matching surface: ' + ops[i].Name.text + '.')
         j+=1
         i+=1
