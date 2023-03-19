@@ -186,17 +186,17 @@ for v in vin:
 # insert: gbxml_B opening into gbxml_C surface object if opening within variable 'dist' parameter
 i = 0
 j = 0
-status = []
+infos = []
 errors = []
 for sf in sfoc:
     if sf=='False':
-        match_error = ('Opening without matching surface: ' + ops[i].Name.text + '.')
-        status.append(match_error)
+        infos.append('Opening without matching surface: ' + ops[i].Name.text + '.')
         j+=1
         i+=1
     else:
         try:
             exsu[sf].insert(3, exsu[sf].copy_opening(ops[i],tolerance=dist)) # copy_opening is xgbxml method
+            infos.append('Copied opening: ' + ops[i].Name.text)
             i+=1            
         except ValueError:
             opening_error = ('Caught ValueError. Check opening: ' + ops[i].Name.text + '.')
@@ -209,11 +209,14 @@ for sf in sfoc:
             errors.append(opening_error)            
             i+=1
 
+# write status to an expander container
+with st.expander('Status'):
+    st.info('Copied ' + str(i-j) + ' of ' + str(len(ops)) + ' openings.')
+    for i in infos:
+        st.info(i)          
+
 # write errors to an expander container
-with st.expander("Exceptions"):
-    st.error('Copied ' + str(i-j) + ' of ' + str(len(ops)) + ' openings.')
-    for s in status:
-        st.error(s)
+with st.expander('Exceptions'):
     for e in errors:
         st.error(e)
 
