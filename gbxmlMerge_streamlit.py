@@ -1,6 +1,7 @@
 ## -*- coding: utf-8 -*-
 """
 Spyder Editor
+Ripcord Engineering - JPS
 
 Merges two gbXML files exported from Revit. First gbXML based on Revit masses does not include openings.
 Second gbXML based on Revit spaces includes openings. Openings within variable 'dist' parameter are
