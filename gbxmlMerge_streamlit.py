@@ -18,6 +18,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 from topologicpy import topologic
 
+
 #print(dir(topologic)) # troubleshooting of topologic module path(s)
 
 
